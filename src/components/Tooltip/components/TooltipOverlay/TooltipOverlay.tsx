@@ -12,6 +12,7 @@ export interface TooltipOverlayProps {
   id: string;
   active: boolean;
   light?: boolean;
+  notRetain?: boolean;
   preferredPosition?: PositionedOverlayProps['preferredPosition'];
   children?: React.ReactNode;
   activator: HTMLElement;
@@ -30,13 +31,19 @@ export class TooltipOverlay extends React.PureComponent<
 
   // eslint-disable-next-line @shopify/react-no-multiple-render-methods
   private renderOverlay = () => {
-    const {active, activator, preferredPosition = 'below'} = this.props;
+    const {
+      active,
+      activator,
+      preferredPosition = 'below',
+      notRetain = true,
+    } = this.props;
 
     return (
       <PositionedOverlay
         active={active}
         activator={activator}
         preferredPosition={preferredPosition}
+        notRetain={notRetain}
         render={this.renderTooltip}
       />
     );
@@ -48,12 +55,13 @@ export class TooltipOverlay extends React.PureComponent<
   ) => {
     const {measuring, desiredHeight, positioning} = overlayDetails;
 
-    const {id, children, light} = this.props;
+    const {id, children, light, notRetain} = this.props;
 
     const containerClassName = classNames(
       styles.Tooltip,
       light && styles.light,
       measuring && styles.measuring,
+      notRetain && styles.notRetain,
       positioning === 'above' && styles.positionedAbove,
     );
 

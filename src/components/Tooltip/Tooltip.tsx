@@ -17,6 +17,7 @@ export interface TooltipProps {
   light?: boolean;
   /** Toggle whether the tooltip is visible */
   active?: boolean;
+  notRetain?: boolean;
   /**
    * The direction the tooltip tries to display
    * @default 'below'
@@ -33,6 +34,7 @@ export function Tooltip({
   children,
   content,
   light,
+  notRetain = true,
   active: originalActive,
   preferredPosition = 'below',
   activatorWrapper = 'span',
@@ -68,6 +70,7 @@ export function Tooltip({
         active={active}
         onClose={noop}
         light={light}
+        notRetain={notRetain}
       >
         <div className={styles.Label} testID="TooltipOverlayLabel">
           {content}
