@@ -17,6 +17,7 @@ export interface TooltipProps {
   light?: boolean;
   /** Toggle whether the tooltip is visible */
   active?: boolean;
+  /** Remove overlay when cursor leaves Tooltip */
   notRetain?: boolean;
   /**
    * The direction the tooltip tries to display
