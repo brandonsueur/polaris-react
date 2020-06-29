@@ -6,6 +6,7 @@ import {EventListener} from '../../EventListener';
 import {PositionedOverlay} from '../PositionedOverlay';
 import * as mathModule from '../utilities/math';
 import * as geometry from '../../../utilities/geometry';
+import styles from '../PositionedOverlay.scss';
 
 describe('<PositionedOverlay />', () => {
   const mockProps = {
@@ -96,6 +97,26 @@ describe('<PositionedOverlay />', () => {
 
       expect((positionedOverlay.find('div').prop('style') as any).width).toBe(
         0,
+      );
+    });
+  });
+
+  describe('preventInteraction', () => {
+    it('dismisses Tooltip once pointer is no longer over children, when preventInteraction is true', () => {
+      const positionedOverlay = mountWithAppProvider(
+        <PositionedOverlay {...mockProps} preventInteraction />,
+      );
+      expect(positionedOverlay.find('div').prop('className')).toContain(
+        styles.preventInteraction,
+      );
+    });
+
+    it('displays Tooltip when pointer is no longer over children, if preventInteraction is not given', () => {
+      const positionedOverlay = mountWithAppProvider(
+        <PositionedOverlay {...mockProps} />,
+      );
+      expect(positionedOverlay.find('div').prop('className')).not.toContain(
+        styles.preventInteraction,
       );
     });
   });
