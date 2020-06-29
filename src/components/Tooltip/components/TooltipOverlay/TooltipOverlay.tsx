@@ -12,7 +12,7 @@ export interface TooltipOverlayProps {
   id: string;
   active: boolean;
   light?: boolean;
-  notRetain?: boolean;
+  preventInteraction?: boolean;
   preferredPosition?: PositionedOverlayProps['preferredPosition'];
   children?: React.ReactNode;
   activator: HTMLElement;
@@ -35,7 +35,7 @@ export class TooltipOverlay extends React.PureComponent<
       active,
       activator,
       preferredPosition = 'below',
-      notRetain = true,
+      preventInteraction,
     } = this.props;
 
     return (
@@ -43,7 +43,7 @@ export class TooltipOverlay extends React.PureComponent<
         active={active}
         activator={activator}
         preferredPosition={preferredPosition}
-        notRetain={notRetain}
+        preventInteraction={preventInteraction}
         render={this.renderTooltip}
       />
     );
@@ -55,13 +55,13 @@ export class TooltipOverlay extends React.PureComponent<
   ) => {
     const {measuring, desiredHeight, positioning} = overlayDetails;
 
-    const {id, children, light, notRetain} = this.props;
+    const {id, children, light, preventInteraction} = this.props;
 
     const containerClassName = classNames(
       styles.Tooltip,
       light && styles.light,
       measuring && styles.measuring,
-      notRetain && styles.notRetain,
+      preventInteraction && styles.preventInteraction,
       positioning === 'above' && styles.positionedAbove,
     );
 
