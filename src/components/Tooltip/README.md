@@ -86,6 +86,18 @@ A light tooltip draws less attention than the default tooltip. Use only when nec
 </div>
 ```
 
+### preventInteraction
+
+On mouse leaving the link, the Tooltip disappears.
+
+```jsx
+<div style={{padding: '75px 0'}}>
+  <Tooltip active preventInteraction content="This order has shipping labels.">
+    <Link>Order #1001</Link>
+  </Tooltip>
+</div>
+```
+
 ---
 
 ## Related components

@@ -18,7 +18,7 @@ export interface TooltipProps {
   /** Toggle whether the tooltip is visible */
   active?: boolean;
   /** Dismiss Tooltip once pointer is no longer over children */
-  preventInteraction?: boolean;
+  preventInteraction?: TooltipOverlayProps['preventInteraction'];
   /**
    * The direction the tooltip tries to display
    * @default 'below'

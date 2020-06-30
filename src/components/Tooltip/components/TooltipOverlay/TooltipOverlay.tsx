@@ -12,7 +12,7 @@ export interface TooltipOverlayProps {
   id: string;
   active: boolean;
   light?: boolean;
-  preventInteraction?: boolean;
+  preventInteraction?: PositionedOverlayProps['preventInteraction'];
   preferredPosition?: PositionedOverlayProps['preferredPosition'];
   children?: React.ReactNode;
   activator: HTMLElement;
@@ -55,13 +55,12 @@ export class TooltipOverlay extends React.PureComponent<
   ) => {
     const {measuring, desiredHeight, positioning} = overlayDetails;
 
-    const {id, children, light, preventInteraction} = this.props;
+    const {id, children, light} = this.props;
 
     const containerClassName = classNames(
       styles.Tooltip,
       light && styles.light,
       measuring && styles.measuring,
-      preventInteraction && styles.preventInteraction,
       positioning === 'above' && styles.positionedAbove,
     );
 

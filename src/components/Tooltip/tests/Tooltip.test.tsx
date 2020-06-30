@@ -34,7 +34,7 @@ describe('<Tooltip />', () => {
     );
   });
 
-  it('dismisses Tooltip once pointer is no longer over children, when preventInteraction is true', () => {
+  it('passes preventInteraction to Tooltip when preventInteraction is true', () => {
     const tooltipPreventInteraction = mountWithAppProvider(
       <Tooltip content="Inner content" active preventInteraction>
         <Link>link content</Link>
