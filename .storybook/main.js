@@ -6,37 +6,25 @@ const postcssShopify = require('@shopify/postcss-plugin');
 // Use the version of webpack-bundle-analyzer (and other plugins/loaders) from
 // sewing-kit in order avoid a bunch of duplication in our devDependencies
 // eslint-disable-next-line node/no-extraneous-require, import/no-extraneous-dependencies
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
-
-const ICON_PATH_REGEX = /icons\//;
-const IMAGE_PATH_REGEX = /\.(jpe?g|png|gif|svg)$/;
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 
 module.exports = {
-  stories: ['../playground/stories.tsx', '../src/components/**/*/README.md'],
+  stories: [
+    '../playground/stories.tsx',
+    '../src/components/**/*/README.md',
+    '../src/**/*.stories.{tsx,mdx}',
+  ],
   addons: [
-    '@storybook/addon-viewport',
-    '@storybook/addon-actions',
-    '@storybook/addon-notes',
+    '@storybook/addon-essentials',
+    '@storybook/addon-toolbars',
     '@storybook/addon-a11y',
-    '@storybook/addon-contexts',
-    '@storybook/addon-knobs',
   ],
   webpackFinal: (config) => {
     const isProduction = config.mode === 'production';
 
-    // When transpiling TS using isolatedModules, the compiler doesn't strip
-    // out exported types as it doesn't know if an item is a type or not.
-    // Ignore those warnings as we don't care about them.
-    const stats = {warningsFilter: /export .* was not found in/};
-    config.stats = stats;
-    config.devServer = {stats};
-
     // Shrink ray only strips hashes when comparing filenames with this format.
     // Without this there will be lots of "add 1 file and removed 1 file" notices.
     config.output.filename = '[name]-[hash].js';
-
-    const cacheDir = path.resolve(__dirname, '../build/cache/storybook');
 
     const extraRules = [
       {
@@ -45,37 +33,14 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              cacheDirectory: `${cacheDir}/markdown`,
+              cacheDirectory: path.resolve(
+                __dirname,
+                '../build/cache/storybook/markdown',
+              ),
             },
           },
           {
             loader: `${__dirname}/polaris-readme-loader.js`,
-          },
-        ],
-      },
-      {
-        test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: `${cacheDir}/typescript`,
-            },
-          },
-        ],
-      },
-      {
-        test(resource) {
-          return (
-            IMAGE_PATH_REGEX.test(resource) && !ICON_PATH_REGEX.test(resource)
-          );
-        },
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
-            },
           },
         ],
       },
@@ -123,8 +88,6 @@ module.exports = {
       },
     });
 
-    config.module.rules = [config.module.rules[0], ...extraRules];
-
     if (isProduction) {
       config.plugins.push(
         new BundleAnalyzerPlugin({
@@ -143,7 +106,14 @@ module.exports = {
       );
     }
 
-    config.resolve.extensions.push('.ts', '.tsx');
+    config.module.rules = [
+      // Strip out existing rules that apply to md files
+      ...config.module.rules.filter(
+        (rule) => rule.test.toString() !== '/\\.md$/',
+      ),
+      ...extraRules,
+    ];
+
     config.resolve.alias = {
       ...config.resolve.alias,
       '@shopify/polaris': path.resolve(__dirname, '..', 'src'),
