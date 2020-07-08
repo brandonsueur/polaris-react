@@ -12,7 +12,7 @@ module.exports = {
   stories: [
     '../playground/stories.tsx',
     '../src/components/**/*/README.md',
-    '../src/**/*.stories.{tsx,mdx}',
+    '../playground/**/*.stories.{tsx,mdx}',
   ],
   addons: [
     '@storybook/addon-essentials',

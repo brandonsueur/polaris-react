@@ -73,19 +73,25 @@ ${example.storyName}.parameters = {
 `.trim();
     });
 
-    csfExports.unshift(`export function AllExamples() {
-  return (
-    <React.Fragment>
-  ${allExamplesCode.join('\n')}
-    </React.Fragment>
-  );
-};
-AllExamples.story = {
-  parameters: {
-    percy: {skip: false},
-    chromatic: {disable: true},
-  }
-}`);
+    if (readme.sbComponent) {
+      csfExports.unshift(
+        `export const WithArgs = (args) => <${readme.sbComponent} {...args} />;`,
+      );
+    }
+
+    //     csfExports.unshift(`export function AllExamples() {
+    //   return (
+    //     <React.Fragment>
+    //   ${allExamplesCode.join('\n')}
+    //     </React.Fragment>
+    //   );
+    // };
+    // AllExamples.story = {
+    //   parameters: {
+    //     percy: {skip: false},
+    //     chromatic: {disable: true},
+    //   }
+    // }`);
   }
 
   const hooks = Object.keys(React)
@@ -94,6 +100,15 @@ AllExamples.story = {
 
   return `
 import React, {${hooks}} from 'react';
+import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Props,
+  Stories,
+  Meta, AddContext } from "@storybook/addon-docs/blocks";
+
 // In production mode webpack shakes this away, so explicitly include it.
 // The following import can be removed in v5, where global CSS has been removed:
 import '@shopify/polaris/styles/global.scss';
@@ -247,7 +262,28 @@ import {
   ViewMinor,
 } from '@shopify/polaris-icons';
 
-export default { title: ${JSON.stringify(`All Components/${readme.name}`)} };
+export default {
+  title: ${JSON.stringify(`All Components/${readme.name}`)},
+  component: ${readme.sbComponent},
+  parameters: {
+    docs: {
+      page: () => {
+        return (<>
+          <Title />
+          <Subtitle />
+          <Description />
+          <Primary />
+          <Props />
+          <Stories />
+
+          <div dangerouslySetInnerHTML={{__html: ${JSON.stringify(
+            readme.docHtml,
+          )}}} />
+        </>);
+      },
+    }
+  }
+};
 
 ${csfExports.join('\n\n')}
 `;
@@ -283,6 +319,8 @@ function parseCodeExamples(data) {
 
   return {
     name: matter.data.name,
+    sbComponent: matter.data.sbComponent,
+    docHtml: new MdParser().parse(matter.content),
     category: matter.data.category,
     examples: generateExamples(matter),
     omitAppProvider: matter.data.omitAppProvider || false,
