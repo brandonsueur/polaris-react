@@ -41,7 +41,7 @@ describe('<Tooltip />', () => {
       </Tooltip>,
     );
     expect(
-      tooltipPreventInteraction.find(TooltipOverlay).prop('preventInteraction'),
+      tooltipPreventInteraction.find(TooltipOverlay).prop('dismissOnMouseOut'),
     ).toBe(true);
   });
 
