@@ -34,7 +34,7 @@ describe('<Tooltip />', () => {
     );
   });
 
-  it('passes dismissOnMouseOut to Tooltip when dismissOnMouseOut is true', () => {
+  it('passes preventInteraction to TooltipOverlay when dismissOnMouseOut is true', () => {
     const tooltipPreventInteraction = mountWithAppProvider(
       <Tooltip content="Inner content" active dismissOnMouseOut>
         <Link>link content</Link>
