@@ -34,9 +34,9 @@ describe('<Tooltip />', () => {
     );
   });
 
-  it('passes preventInteraction to Tooltip when preventInteraction is true', () => {
+  it('passes dismissOnMouseOut to Tooltip when dismissOnMouseOut is true', () => {
     const tooltipPreventInteraction = mountWithAppProvider(
-      <Tooltip content="Inner content" active preventInteraction>
+      <Tooltip content="Inner content" active dismissOnMouseOut>
         <Link>link content</Link>
       </Tooltip>,
     );
