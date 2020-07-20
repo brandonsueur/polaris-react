@@ -86,15 +86,27 @@ A light tooltip draws less attention than the default tooltip. Use only when nec
 </div>
 ```
 
-### preventInteraction
+### Tooltip visible only with child interaction
 
-On mouse leaving the link, the Tooltip disappears.
+Use when the tooltip overlays interactive elements when active, for example a form input. The `preventInteraction` prop prevents the tooltip from remaining active when mouse hover or focus leaves its `children` and enters the tooltip's content.
 
 ```jsx
-<div style={{padding: '75px 0'}}>
-  <Tooltip active preventInteraction content="This order has shipping labels.">
-    <Link>Order #1001</Link>
-  </Tooltip>
+<div style={{width: '200px'}}>
+  <ButtonGroup segmented fullWidth>
+    <Tooltip content="Bold" dismissOnMouseOut>
+      <Button>B</Button>
+    </Tooltip>
+    <Tooltip content="Italic" dismissOnMouseOut>
+      <Button>I</Button>
+    </Tooltip>
+    <Tooltip content="Underline" dismissOnMouseOut>
+      <Button>U</Button>
+    </Tooltip>
+    <Tooltip content="Strikethrough" dismissOnMouseOut>
+      <Button>S</Button>
+    </Tooltip>
+  </ButtonGroup>
+  <TextField label="Product title" labelHidden multiline />
 </div>
 ```
 

@@ -17,8 +17,8 @@ export interface TooltipProps {
   light?: boolean;
   /** Toggle whether the tooltip is visible */
   active?: boolean;
-  /** Dismiss Tooltip once pointer is no longer over children */
-  preventInteraction?: TooltipOverlayProps['preventInteraction'];
+  /** Dismiss tooltip when not interacting with its children. */
+  dismissOnMouseOut?: TooltipOverlayProps['preventInteraction'];
   /**
    * The direction the tooltip tries to display
    * @default 'below'
@@ -35,7 +35,7 @@ export function Tooltip({
   children,
   content,
   light,
-  preventInteraction,
+  dismissOnMouseOut,
   active: originalActive,
   preferredPosition = 'below',
   activatorWrapper = 'span',
@@ -71,7 +71,7 @@ export function Tooltip({
         active={active}
         onClose={noop}
         light={light}
-        preventInteraction={preventInteraction}
+        preventInteraction={dismissOnMouseOut}
       >
         <div className={styles.Label} testID="TooltipOverlayLabel">
           {content}
