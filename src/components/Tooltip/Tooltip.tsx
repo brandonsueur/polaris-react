@@ -17,7 +17,7 @@ export interface TooltipProps {
   light?: boolean;
   /** Toggle whether the tooltip is visible */
   active?: boolean;
-  /** Dismiss tooltip when not interacting with its children. */
+  /** Dismiss tooltip when not interacting with its children */
   dismissOnMouseOut?: TooltipOverlayProps['preventInteraction'];
   /**
    * The direction the tooltip tries to display
